@@ -7,10 +7,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.attendancemanagementsystem.Model.RecordModel.StudentsItem;
 import com.example.attendancemanagementsystem.R;
+
+import java.util.List;
 
 public class StudentRecordAdapter extends RecyclerView.Adapter<StudentRecordAdapter.ViewHolder> {
 
+    List<StudentsItem> itemList;
+
+    public StudentRecordAdapter(List<StudentsItem> itemList) {
+        this.itemList = itemList;
+    }
 
     @NonNull
     @Override
@@ -21,13 +29,26 @@ public class StudentRecordAdapter extends RecyclerView.Adapter<StudentRecordAdap
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int pos) {
+        final StudentsItem studentsItem = itemList.get(pos);
+        viewHolder.recodrdStudentName.setText(studentsItem.getName());
+        viewHolder.recodrdStudentCode.setText(String.valueOf(studentsItem.getSid()));
+        if(onItemClickListener!=null){
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClickListener.onItemClick(pos,studentsItem);
 
+                }
+            });
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        if(itemList==null)return 0;
+        return itemList.size();
+
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
@@ -37,5 +58,15 @@ public class StudentRecordAdapter extends RecyclerView.Adapter<StudentRecordAdap
             recodrdStudentName =itemView.findViewById(R.id.name);
             recodrdStudentCode = itemView.findViewById(R.id.code);
         }
+    }
+
+    OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public interface OnItemClickListener{
+        void onItemClick(int pos, StudentsItem studentsItem);
     }
 }

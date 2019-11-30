@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import com.example.attendancemanagementsystem.Base.BaseActivity;
 import com.example.attendancemanagementsystem.Model.ProfessorModel.ProfessorResponse;
 import com.example.attendancemanagementsystem.R;
+import com.example.attendancemanagementsystem.SessionManager;
 import com.example.attendancemanagementsystem.ViewModel.SignInViewModel;
 
 public class Sign_in extends BaseActivity implements View.OnClickListener {
@@ -25,11 +27,22 @@ public class Sign_in extends BaseActivity implements View.OnClickListener {
     SignInViewModel signInViewModel;
     String userNameHolder;
     String passwordHolder;
+    private SessionManager session;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+        session = new SessionManager(activity);
+        if (session.isLoggedIn()) {
+            // User is already logged in. Take him to main activity
+            Intent intent = new Intent(Sign_in.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         initView();
         //initialize view model object
         signInViewModel= ViewModelProviders.of(this)
@@ -44,7 +57,10 @@ public class Sign_in extends BaseActivity implements View.OnClickListener {
                             showMessageInt(R.string.error,R.string.user_name_or_password_not_valid,R.string.ok);
                         }else {
                             //start activity home
-                            rememberMe(userNameHolder,passwordHolder);
+                            session.setLogin(true,professorResponse.getPid());
+                            session.setUserName(userNameHolder);
+                            session.setPassword_TAG(passwordHolder);
+                            Log.e("user_Password",session.getPassword_TAG()+session.getUserName()+session.getUserId());
                             Intent intent = new Intent(activity,HomeActivity.class);
                             startActivity(intent);
                     }
@@ -76,9 +92,7 @@ public class Sign_in extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    public void checkIsLogin(){
 
-    }
 
 
     private void initView() {

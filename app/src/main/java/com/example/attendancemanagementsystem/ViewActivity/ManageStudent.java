@@ -24,7 +24,7 @@ public class ManageStudent extends BaseActivity implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_manage_student);
-        Toolbar myToolbar = findViewById(R.id.app_bar);
+        Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
         TextView Title = myToolbar.findViewById(R.id.toolbar_title);
         Title.setText("Manage");

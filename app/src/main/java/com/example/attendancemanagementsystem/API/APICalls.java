@@ -3,8 +3,8 @@ package com.example.attendancemanagementsystem.API;
 
 import com.example.attendancemanagementsystem.Model.DatesModel.DatesResponse;
 import com.example.attendancemanagementsystem.Model.ProfessorModel.ProfessorResponse;
+import com.example.attendancemanagementsystem.Model.RecordModel.RecordResponse;
 
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -22,8 +22,8 @@ public interface APICalls {
 
 
     @GET("API/get_record")
-    Call<DatesResponse> getRecord(@Query("username") String userName,
-                                 @Query("password") String Password, @Query("cid") String cid);
+    Call<RecordResponse> getRecord(@Query("date") String date,
+                                   @Query("pid") String pid, @Query("cid") String cid);
 
 
 }

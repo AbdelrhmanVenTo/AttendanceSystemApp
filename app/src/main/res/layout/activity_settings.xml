@@ -7,10 +7,11 @@
     tools:context=".ViewActivity.Settings">
 
     <include
-        android:id="@+id/include"
+        android:id="@+id/toolbar"
         layout="@layout/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
 
     <View
         android:id="@+id/view"
@@ -18,7 +19,7 @@
         android:layout_height="1dp"
         android:layout_gravity="top"
         android:background="@color/buttonColor"
-        app:layout_constraintBottom_toBottomOf="@+id/include" />
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar" />
 
     <Button
         android:id="@+id/changePassword"

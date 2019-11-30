@@ -16,7 +16,7 @@ public class Report extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
-        Toolbar myToolbar = findViewById(R.id.app_bar);
+        Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
         TextView Title = myToolbar.findViewById(R.id.toolbar_title);
         Title.setText("Report");

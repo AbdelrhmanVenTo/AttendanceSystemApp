@@ -17,6 +17,7 @@ import com.example.attendancemanagementsystem.Base.BaseActivity;
 import com.example.attendancemanagementsystem.DataHolder;
 import com.example.attendancemanagementsystem.Model.ProfessorModel.CoursesItem;
 import com.example.attendancemanagementsystem.R;
+import com.example.attendancemanagementsystem.SessionManager;
 import com.example.attendancemanagementsystem.ViewModel.ManageViewModel;
 
 
@@ -28,8 +29,7 @@ public class ManageListChooseCourse extends BaseActivity {
     RecyclerView.LayoutManager layoutManager;
     CourseListAdapter adapter ;
     ManageViewModel manageViewModel;
-
-
+    private SessionManager session;
 
 
     @Override
@@ -38,7 +38,7 @@ public class ManageListChooseCourse extends BaseActivity {
         setContentView(R.layout.activity_manage_choose_course);
 
         //Adding a tool bar with button Back
-        Toolbar myToolbar = findViewById(R.id.app_bar);
+        Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
         TextView Title = myToolbar.findViewById(R.id.toolbar_title);
         Title.setText("Manage");
@@ -48,10 +48,8 @@ public class ManageListChooseCourse extends BaseActivity {
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setDisplayShowTitleEnabled(false);
         myToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.buttonColor), PorterDuff.Mode.SRC_ATOP);
-
+        session = new SessionManager(activity);
         initView();
-        String user = "m.sameh";
-        String password = "password";
         adapter = new CourseListAdapter(null);
         layoutManager = new LinearLayoutManager(activity);
         manageRecycler.setAdapter(adapter);
@@ -59,6 +57,8 @@ public class ManageListChooseCourse extends BaseActivity {
 
         manageViewModel= ViewModelProviders.of(this)
                 .get(ManageViewModel.class);
+
+        manageViewModel.getCourses(session.getUserName(), session.getPassword_TAG());
 
         manageViewModel.getProfessorResponseGetCourses().observe(this, new Observer<List<CoursesItem>>() {
                     @Override
@@ -76,10 +76,6 @@ public class ManageListChooseCourse extends BaseActivity {
 
                     }
                 });
-
-
-        manageViewModel.getCourses(user, password);
-
 
 
 

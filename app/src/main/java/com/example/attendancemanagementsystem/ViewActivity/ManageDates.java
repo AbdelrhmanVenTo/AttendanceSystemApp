@@ -2,6 +2,7 @@ package com.example.attendancemanagementsystem.ViewActivity;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,8 +17,11 @@ import com.example.attendancemanagementsystem.Base.BaseActivity;
 import com.example.attendancemanagementsystem.DataHolder;
 import com.example.attendancemanagementsystem.Model.DatesModel.DatesResponse;
 import com.example.attendancemanagementsystem.R;
+import com.example.attendancemanagementsystem.SessionManager;
 import com.example.attendancemanagementsystem.ViewModel.ManageViewModel;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ManageDates extends BaseActivity {
@@ -26,12 +30,14 @@ public class ManageDates extends BaseActivity {
     RecyclerView.LayoutManager layoutManager;
     ManageDatesAdapter adapter;
     ManageViewModel manageViewModel;
+    private SessionManager session;
+    List<String> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_manage_dates);
-        Toolbar myToolbar = findViewById(R.id.app_bar);
+        Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
         TextView Title = myToolbar.findViewById(R.id.toolbar_title);
         Title.setText("Manage");
@@ -41,10 +47,10 @@ public class ManageDates extends BaseActivity {
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setDisplayShowTitleEnabled(false);
         myToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.buttonColor), PorterDuff.Mode.SRC_ATOP);
-
+        session = new SessionManager(activity);
         initView();
-        String user = "m.sameh";
-        String password = "password";
+        list = new ArrayList<>();
+
         adapter = new ManageDatesAdapter(null);
         layoutManager = new LinearLayoutManager(activity);
         datesListRecycler.setAdapter(adapter);
@@ -52,16 +58,27 @@ public class ManageDates extends BaseActivity {
         manageViewModel =ViewModelProviders.of(this)
                 .get(ManageViewModel.class);
 
+        manageViewModel.getDates(session.getUserName(), session.getPassword_TAG(), DataHolder.course.getCid());
+
+
         manageViewModel.getDatesResponseViewModel().observe(this, new Observer<DatesResponse>() {
                     @Override
                     public void onChanged(@Nullable DatesResponse datesResponse) {
                         adapter = new ManageDatesAdapter(datesResponse);
                         datesListRecycler.setAdapter(adapter);
+                        adapter.setOnItemClickListener(new ManageDatesAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(int pos, DatesResponse dates) {
+                                list.add(dates.getDates().toString());
+                                Intent intent=new Intent(activity,ListOfStudent.class);
+                                intent.putExtra("date",list.get(pos).toString());
+                                startActivity(intent);
+                            }
+                        });
                     }
                 });
 
 
-                manageViewModel.getDates(user, password, DataHolder.course.getCid());
 
     }
 

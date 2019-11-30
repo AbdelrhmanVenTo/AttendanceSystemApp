@@ -9,7 +9,7 @@
     tools:context=".ViewActivity.ManageStudent">
 
     <include
-        android:id="@+id/include"
+        android:id="@+id/toolbar"
         layout="@layout/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

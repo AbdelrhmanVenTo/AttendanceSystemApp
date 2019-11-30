@@ -22,7 +22,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Toolbar myToolbar = findViewById(R.id.app_bar);
+        Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
         TextView Title = myToolbar.findViewById(R.id.toolbar_title);
         Title.setText("Home");
@@ -30,7 +30,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         ActionBar ab = getSupportActionBar();
         // Enable the Up button
         ab.setDisplayShowTitleEnabled(false);
-        getUser();
+
         initView();
     }
 
